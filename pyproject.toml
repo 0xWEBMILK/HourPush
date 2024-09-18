@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "hourpush"
+version = "0.1.0"
+description = ""
+authors = ["D. Adamson <0xwebmilk@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic-settings = "^2.5.2"
+python-decouple = "^3.8"
+structlog = "^24.4.0"
+pydantic = "^2.9.2"
+aiohttp = "^3.10.5"
+spacy = "^3.7.6"
+sqlalchemy = "^2.0.35"
+pandas = "^2.2.2"
+psycopg2 = "^2.9.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
