@@ -17,8 +17,10 @@ async def save_tasks(tasks: list, saves_path: str, saves_encoding: str) -> None:
 
     task_dict = {task['title']: task for task in existing_data[month]}
 
+    # Status: 6 _\|/_ Отложена
+
     for task in tasks:
-        if task.get('status') != '5' and task.get('priority') != '1':
+        if (task.get('status') != '5' and task.get('priority') != '1') or (task.get('status') == '6'):
             if task['title'] in task_dict:
                 task_dict[task['title']]['lead-time'] += 24
                 task_dict[task['title']]['touch-time'] = task['hour']
