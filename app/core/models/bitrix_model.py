@@ -25,4 +25,4 @@ class BitrixModel:
         return await self._action(self.get_comments_event, id=task_id)
 
     async def get_tasks(self, start: int = 0):
-        return await self._action(self.get_tasks_event, start=start)
+        return await self._action(self.get_tasks_event, start=start, STATUS='2')
