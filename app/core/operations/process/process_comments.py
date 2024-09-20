@@ -1,8 +1,5 @@
 import datetime
-import spacy
 import re
-
-nlp = spacy.load('ru_core_news_sm')
 
 async def process_comments(text, date):
     now = datetime.datetime.now()
