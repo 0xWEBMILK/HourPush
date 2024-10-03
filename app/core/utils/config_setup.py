@@ -31,6 +31,9 @@ class BitrixSettings(BaseModel):
     
     get_comments_event: SecretStr = SecretStr(config('GET_COMMENTS_EVENT'))
     get_tasks_event: SecretStr = SecretStr(config('GET_TASKS_EVENT'))
+    get_stages_event: SecretStr = SecretStr(config('GET_STAGES_EVENT'))
+    get_sprint_event: SecretStr = SecretStr(config('GET_SPRINT_EVENT'))
+
 
 
 # Saves settings
