@@ -20,7 +20,7 @@ async def run(*args, **kwargs):
     logger.info("Variables initialise | success")
 
 
-    logger.info("Models initialise | started")
+    logger.info("Bitrix model initialise | started")
     bitrix_model = BitrixModel(
         token=bitrix_config.get('token'),
         host=bitrix_config.get('host'),
@@ -30,17 +30,25 @@ async def run(*args, **kwargs):
         get_sprint_event=bitrix_config.get('get_sprint_event'),
         get_stages_event=bitrix_config.get('get_stages_event'),
     )
+    logger.info("Bitrix model initialise | success")
 
 
+    logger.info("Database model initialise | started")
     database_model = DatabaseModel(
         sqlalchemy_database_uri = database_config.get('sqlalchemy_database_uri'),
         sqlalchemy_track_modifications = database_config.get('sqlalchemy_track_modifications')
     )
-    logger.info("Models initialise | success")
+    logger.info("Database model initialise | success")
 
 
+    logger.info("Getting active sprint id | started")
     bitrix_sprint_id = await get_sprint(bitrix_model)
+    logger.info("Getting active sprint id | success")
+
+
+    logger.info("Getting active stages ids | started")
     bitrix_stages_ids = await get_stages(bitrix_model, bitrix_sprint_id)
+    logger.info("Getting active stages ids | success")
 
 
     logger.info("Getting all tasks | started")
