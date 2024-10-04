@@ -1,7 +1,9 @@
+from typing import Union
 import datetime
 import re
 
-async def process_comments(text, date):
+
+async def process_comments(text: str, date: str) -> float:
     now = datetime.datetime.now()
 
     if f"{now.strftime("%Y")}-{now.strftime("%m")}" != date[:7]:
