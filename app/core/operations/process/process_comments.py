@@ -1,6 +1,33 @@
-from typing import Union
-import datetime
 import re
+import datetime
+
+
+def clean_text(text: str) -> str:
+    """Clearing text from unnecessary characters."""
+    return re.sub(r'[^\w\s.,]', '', text)
+
+
+def extract_time_patterns(text: str):
+    """Look for time patterns in the text and return a list of found values."""
+    return re.findall(r'(\d+(?:[.,]\d*)?)\s*(час(?:[а-я]*)|ч|minут(?:[а-я]*)|мин)', text)
+
+
+def calculate_total_time(time_patterns) -> float:
+    """Calculate the total number of hours by converting minutes to hours."""
+    hours = 0.0
+    minutes = 0.0
+
+    for amount, unit in time_patterns:
+        try:
+            amount = float(amount.replace(',', '.'))
+            if 'час' in unit or 'ч' in unit:
+                hours += amount
+            elif 'мин' in unit:
+                minutes += amount
+        except ValueError:
+            pass
+
+    return hours + (minutes / 60.0)
 
 async def process_comments(text: str, date: str) -> float:
     """
@@ -14,29 +41,16 @@ async def process_comments(text: str, date: str) -> float:
     Returns:
         float: The total time in hours extracted from the text, or 0.0 if the date is outside the current month.
     """
+
     now = datetime.datetime.now()
 
-    # Check if the date is in the current year and month
-    if f"{now.strftime('%Y')}-{now.strftime('%m')}" != date[:7]:
-        return 0.0
+    if f"{now.strftime("%Y")}-{now.strftime("%m")}" != date[:7]:
+            return 0.0
     else:
-        text = re.sub(r'[^\w\s.,]', '', text)
+        clean_text_data = clean_text(text)
 
-        # Find all time patterns (hours or minutes)
-        time_patterns = re.findall(r'(\d+(?:[.,]\d*)?)\s*(час[а-я]*|ч|minут[а-я]*|мин)', text)
+        time_patterns = extract_time_patterns(clean_text_data)
 
-        hours = 0.0
-        minutes = 0.0
+        total_hours = calculate_total_time(time_patterns)
 
-        for amount, unit in time_patterns:
-            try:
-                amount = float(amount.replace(',', '.'))
-                if re.search(r'час[а-я]*|ч', unit):
-                    hours += amount
-                elif re.search(r'минут[а-я]*|мин', unit):
-                    minutes += amount
-            except:
-                pass
-
-        total_hours = hours + (minutes / 60.0)
         return total_hours
