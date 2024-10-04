@@ -7,8 +7,6 @@ from .models import *
 from .operations.get import *
 from .operations.process import save_tasks
 from .operations.database import save_to_database
-import datetime
-import time
 
 
 logger: FilteringBoundLogger = structlog.get_logger()
