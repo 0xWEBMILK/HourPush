@@ -1,10 +1,10 @@
-from .utils.initialise import bitrix_variables_initialise, saves_variables_initialise, database_variables_initialise
+from .utils.initialise import *
 
 import structlog
 from structlog.typing import FilteringBoundLogger
 
-from .models import BitrixModel, DatabaseModel
-from .operations.get import get_tasks, get_comments, get_sprint, get_stages
+from .models import *
+from .operations.get import *
 from .operations.process import save_tasks
 from .operations.database import save_to_database
 
@@ -68,8 +68,8 @@ async def run(*args, **kwargs):
     logger.info("Saving tasks | success")
 
 
-    logger.info("Writing to database | started")
-    await save_to_database(database_model,
-                           table_name=database_config.get('table_name'),
-                           saves_path=saves_config.get('saves_path'))
-    logger.info("Writing to database | success")
+    # logger.info("Writing to database | started")
+    # await save_to_database(database_model,
+    #                        table_name=database_config.get('table_name'),
+    #                        saves_path=saves_config.get('saves_path'))
+    # logger.info("Writing to database | success")

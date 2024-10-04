@@ -1,31 +1,21 @@
-from datetime import datetime
-import json
-import os
+from file_methods import load_json_data, save_json_data
+from process_tasks import get_current_month, process_tasks
+
 
 async def save_tasks(tasks: list, saves_path: str, saves_encoding: str) -> None:
-    date = datetime.now()
-    month = date.strftime('%B')
+    """
+    Saves a list of tasks to a file by processing them and updating the existing data.
 
-    if os.path.exists(saves_path):
-        with open(saves_path, 'r', encoding=saves_encoding) as file:
-            existing_data = json.load(file)
-    else:
-        existing_data = {}
+    Args:
+        tasks (list): A list of tasks, where each task is a dictionary containing 'title', 'status', 'priority', and 'hour'.
+        saves_path (str): The path to the file where tasks data will be saved.
+        saves_encoding (str): The encoding format used to open and write the file.
 
-    if month not in existing_data:
-        existing_data[month] = []
+    Returns:
+        None
+    """
 
-    task_dict = {task['title']: task for task in existing_data[month]}
-
-    for task in tasks:
-        if (task.get('status') != '5' and task.get('priority') != '1') or (task.get('status') == '6'):
-            if task['title'] in task_dict:
-                task_dict[task['title']]['lead-time'] += 24
-                task_dict[task['title']]['touch-time'] = task['hour']
-            else:
-                task_dict[task['title']] = {'title': task.get('title'), 'lead-time': 24, 'touch-time': task['hour']}
-
-    existing_data[month] = list(task_dict.values())
-
-    with open(saves_path, 'w', encoding=saves_encoding) as file:
-        json.dump(existing_data, file, ensure_ascii=False, indent=4)
+    month = get_current_month()
+    existing_data = load_json_data(saves_path, saves_encoding)
+    updated_data = process_tasks(tasks, existing_data, month)
+    save_json_data(saves_path, updated_data, saves_encoding)
