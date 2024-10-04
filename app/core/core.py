@@ -68,10 +68,10 @@ async def run(*args, **kwargs):
                      saves_path=saves_config.get('saves_path'),
                      saves_encoding=saves_config.get('saves_encoding'))
     logger.info("Saving tasks | success")
-    
 
-    # logger.info("Writing to database | started")
-    # await save_to_database(database_model,
-    #                        table_name=database_config.get('table_name'),
-    #                        saves_path=saves_config.get('saves_path'))
-    # logger.info("Writing to database | success")
+
+    logger.info("Writing to database | started")
+    await save_to_database(database_model,
+                           table_name=database_config.get('table_name'),
+                           saves_path=saves_config.get('saves_path'))
+    logger.info("Writing to database | success")
