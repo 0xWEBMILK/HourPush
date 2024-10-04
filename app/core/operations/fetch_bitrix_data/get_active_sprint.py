@@ -1,4 +1,4 @@
-async def get_sprint(bitrix_model) -> str:
+async def get_active_sprint(bitrix_model) -> str:
     """
     Retrieves the current sprint ID from the Bitrix model.
 

@@ -1,6 +1,6 @@
 import pandas as pd
 
-async def json_to_dataframe(data: dict) -> pd.DataFrame:
+async def transform_data(data: dict) -> pd.DataFrame:
     """
     Converts a dictionary of tasks by month into a pandas DataFrame.
 

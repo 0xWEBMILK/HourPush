@@ -12,7 +12,7 @@ def extract_time_patterns(text: str):
     return re.findall(r'(\d+(?:[.,]\d*)?)\s*(час(?:[а-я]*)|ч|minут(?:[а-я]*)|мин)', text)
 
 
-def calculate_total_time(time_patterns) -> float:
+def calculate_total_hours(time_patterns) -> float:
     """Calculate the total number of hours by converting minutes to hours."""
     hours = 0.0
     minutes = 0.0
@@ -29,7 +29,7 @@ def calculate_total_time(time_patterns) -> float:
 
     return hours + (minutes / 60.0)
 
-async def process_comments(text: str, date: str) -> float:
+async def process_comment_time(text: str, date: str) -> float:
     """
     Processes a text to extract time-related patterns and calculates the total time in hours. 
     Returns 0.0 if the date provided does not match the current month.
@@ -51,6 +51,6 @@ async def process_comments(text: str, date: str) -> float:
 
         time_patterns = extract_time_patterns(clean_text_data)
 
-        total_hours = calculate_total_time(time_patterns)
+        total_hours = calculate_total_hours(time_patterns)
 
         return total_hours

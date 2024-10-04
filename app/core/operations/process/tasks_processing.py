@@ -12,7 +12,7 @@ def get_current_month() -> str:
     return datetime.now().strftime('%B')
 
 
-def process_tasks(tasks: list, existing_data: dict, month: str) -> dict:
+def process_task_list(tasks: list, existing_data: dict, month: str) -> dict:
     """
     Processes a list of tasks and updates the existing data for the given month.
 

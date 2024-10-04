@@ -1,7 +1,7 @@
 from typing import List, Dict
 
 
-async def get_tasks(bitrix_model, bitrix_stage_ids: List[Dict]) -> List[Dict]:
+async def get_sprint_tasks(bitrix_model, bitrix_stage_ids: List[Dict]) -> List[Dict]:
     """
     Retrieves tasks for a list of stage IDs from the Bitrix model and initializes each task's 'hour' field to 0.0.
 

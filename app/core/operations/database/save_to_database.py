@@ -1,5 +1,5 @@
-from .load_json import load_json
-from .json_to_dataframe import json_to_dataframe
+from .load_tasks_data import load_tasks_file
+from .transform_data import transform_data
 
 async def save_to_database(database_model, table_name: str, saves_path: str) -> None:
     """
@@ -13,8 +13,8 @@ async def save_to_database(database_model, table_name: str, saves_path: str) -> 
     Returns:
         None
     """
-    data = await load_json(saves_path)
-    dataframe = await json_to_dataframe(data)
+    data = await load_tasks_file(saves_path)
+    dataframe = await transform_data(data)
 
     await database_model.initialise()
     await database_model.write_to_table(dataframe, table_name)

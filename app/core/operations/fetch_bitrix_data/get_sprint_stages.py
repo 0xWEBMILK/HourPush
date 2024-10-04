@@ -1,7 +1,7 @@
 from typing import List, Dict
 
 
-async def get_stages(bitrix_model, bitrix_sprint_id: str) -> List[Dict]:
+async def get_sprint_stages(bitrix_model, bitrix_sprint_id: str) -> List[Dict]:
     """
     Retrieves the stages for a given sprint from the Bitrix model, excluding the first and last stages.
 

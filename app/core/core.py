@@ -1,10 +1,10 @@
-from .utils.initialise import *
+from .utils.initialise import bitrix_variables_initialise, database_variables_initialise, saves_variables_initialise
 
 import structlog
 from structlog.typing import FilteringBoundLogger
 
-from .models import *
-from .operations.get import *
+from .models import BitrixModel, DatabaseModel
+from .operations.fetch_bitrix_data import get_active_sprint, get_tasks_comments, get_sprint_stages, get_sprint_tasks
 from .operations.process import save_tasks
 from .operations.database import save_to_database
 
@@ -14,9 +14,9 @@ logger: FilteringBoundLogger = structlog.get_logger()
 
 async def run(*args, **kwargs):
     logger.info("Variables initialise | started")
-    bitrix_config = await bitrix_variables_initialise()
-    database_config = await database_variables_initialise()
-    saves_config = await saves_variables_initialise()
+    bitrix_config = bitrix_variables_initialise()
+    database_config = database_variables_initialise()
+    saves_config = saves_variables_initialise()
     logger.info("Variables initialise | success")
 
 
@@ -42,22 +42,22 @@ async def run(*args, **kwargs):
 
 
     logger.info("Getting active sprint id | started")
-    bitrix_sprint_id = await get_sprint(bitrix_model)
+    bitrix_active_sprint_id = await get_active_sprint(bitrix_model)
     logger.info("Getting active sprint id | success")
 
 
     logger.info("Getting active stages ids | started")
-    bitrix_stages_ids = await get_stages(bitrix_model, bitrix_sprint_id)
+    bitrix_stages_ids = await get_sprint_stages(bitrix_model, bitrix_active_sprint_id)
     logger.info("Getting active stages ids | success")
 
 
     logger.info("Getting all tasks | started")
-    bitrix_tasks = await get_tasks(bitrix_model, bitrix_stages_ids)
+    bitrix_tasks = await get_sprint_tasks(bitrix_model, bitrix_stages_ids)
     logger.info("Getting all tasks | success")
 
 
     logger.info("Calculating hours from comments | started")
-    bitrix_tasks = await get_comments(bitrix_model, bitrix_tasks)
+    bitrix_tasks = await get_tasks_comments(bitrix_model, bitrix_tasks)
     logger.info("Calculating hours from comments | success")
 
 

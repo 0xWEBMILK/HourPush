@@ -2,7 +2,7 @@ import json
 import os
 
 
-def load_json_data(file_path: str, encoding: str) -> dict:
+def load_json_file(file_path: str, encoding: str) -> dict:
     """
     Loads JSON data from a specified file.
 
@@ -20,7 +20,7 @@ def load_json_data(file_path: str, encoding: str) -> dict:
     return {}
 
 
-def save_json_data(file_path: str, data: dict, encoding: str) -> None:
+def save_json_file(file_path: str, data: dict, encoding: str) -> None:
     """
     Saves JSON data to a specified file.
 

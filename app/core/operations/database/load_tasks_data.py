@@ -1,6 +1,6 @@
 import json
 
-async def load_json(file_path: str) -> dict:
+async def load_tasks_file(file_path: str) -> dict:
     """
     Loads JSON data from a specified file.
 
