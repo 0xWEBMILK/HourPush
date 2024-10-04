@@ -1,7 +1,8 @@
 from ..config_setup import main_settings
+from typing import Dict
 
 
-async def bitrix_variables_initialise() -> dict:
+async def bitrix_variables_initialise() -> Dict[str, str]:
     return {
             "host": main_settings.bitrix.host.get_secret_value(),
             "token": main_settings.bitrix.token.get_secret_value(),
