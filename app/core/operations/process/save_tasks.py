@@ -1,5 +1,5 @@
-from file_methods import load_json_data, save_json_data
-from process_tasks import get_current_month, process_tasks
+from .file_methods import load_json_data, save_json_data
+from .process_tasks import get_current_month, process_tasks
 
 
 async def save_tasks(tasks: list, saves_path: str, saves_encoding: str) -> None:
