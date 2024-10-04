@@ -2,7 +2,7 @@ from ..process import process_comments
 from typing import List, Dict
 
 
-async def get_comments(bitrix_model, tasks: List[Dict]) -> List[Dict]:
+async def get_comments(bitrix_model, tasks: List[Dict], now) -> List[Dict]:
     """
     Fetches comments for each task from the Bitrix model and calculates the total time (in hours) 
     for each task based on the content of the comments.
