@@ -1,4 +1,4 @@
-[tool.poetry]
+[tool.poetry] 
 name = "hourpush"
 version = "0.1.0"
 description = ""
