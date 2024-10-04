@@ -1,6 +1,6 @@
 import datetime
 
-def process_date(date):
+def process_date(date: str) -> int:
     now = datetime.datetime.now().date()
     task_date = datetime.datetime.strptime(date[0:10], '%Y-%m-%d').date()
     print(24 * (now - task_date).days)
