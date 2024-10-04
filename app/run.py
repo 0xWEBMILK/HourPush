@@ -8,6 +8,7 @@ from core.utils.config_setup import log_settings
 
 from core import run
 
+
 logger: FilteringBoundLogger = structlog.get_logger()
 
 
