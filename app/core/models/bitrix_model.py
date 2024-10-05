@@ -2,7 +2,7 @@ import structlog
 from typing import Any, Dict
 from structlog.typing import FilteringBoundLogger
 
-from ..operations.api_methods.action import action
+from ..operations.api_operations.action import action
 
 logger: FilteringBoundLogger = structlog.get_logger()
 

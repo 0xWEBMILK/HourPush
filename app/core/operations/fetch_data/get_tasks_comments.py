@@ -1,4 +1,4 @@
-from ..process import process_comment_time
+from ..process_data.process_hours import process_comment_time
 from typing import List, Dict
 
 

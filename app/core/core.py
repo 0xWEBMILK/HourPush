@@ -4,8 +4,8 @@ import structlog
 from structlog.typing import FilteringBoundLogger
 
 from .models import BitrixModel, DatabaseModel
-from .operations.fetch_bitrix_data import get_active_sprint, get_tasks_comments, get_sprint_stages, get_sprint_tasks
-from .operations.process import save_tasks
+from .operations.fetch_data import get_active_sprint, get_tasks_comments, get_sprint_stages, get_sprint_tasks
+from .operations.process_data.process_hours import process_comment_time, validate_task_list
 from .operations.database import save_to_database
 
 
@@ -60,6 +60,10 @@ async def run(*args, **kwargs):
     bitrix_tasks = await get_tasks_comments(bitrix_model, bitrix_tasks)
     logger.info("Calculating hours from comments | success")
 
+
+    logger.info("Adding hours to tasks | started")
+    bitrix_tasks = await validate_task_list(bitrix_tasks, '10')
+    logger.info("Adding hours to tasks | success")
 
     logger.info("Saving tasks | started")
     await save_tasks(bitrix_tasks,
