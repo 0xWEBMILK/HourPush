@@ -1,79 +1,56 @@
-from .utils.initialise import bitrix_variables_initialise, database_variables_initialise, saves_variables_initialise
+from core.config.logger_setup import logger
+from core.config.main_config import get_all_configs
 
-import structlog
-from structlog.typing import FilteringBoundLogger
-
-from .models import BitrixModel, DatabaseModel
-from .operations.fetch_data import get_active_sprint, get_tasks_comments, get_sprint_stages, get_sprint_tasks
-from .operations.process_data.process_hours import process_comment_time, validate_task_list
-from .operations.database import save_to_database
-
-
-logger: FilteringBoundLogger = structlog.get_logger()
+from core.src.api.bitrix_client import BitrixClient
+from core.src.sprint import get_active_sprint, get_stages, get_tasks, get_comments
+from core.src.processing import process_leadtime, process_touchtime
+from core.src.db.database import Database
 
 
 async def run(*args, **kwargs):
-    logger.info("Variables initialise | started")
-    bitrix_config = bitrix_variables_initialise()
-    database_config = database_variables_initialise()
-    saves_config = saves_variables_initialise()
-    logger.info("Variables initialise | success")
+    logger.info("Initialise variables | Started")
+    bitrix_config = get_all_configs()['bitrix']
+    database_config = get_all_configs()['database']
+    logger.info("Initialise variables | Success")
 
-
-    logger.info("Bitrix model initialise | started")
-    bitrix_model = BitrixModel(
-        token=bitrix_config.get('token'),
-        host=bitrix_config.get('host'),
-
-        get_comments_event=bitrix_config.get('get_comments_event'),
-        get_tasks_event=bitrix_config.get('get_tasks_event'),
-        get_sprint_event=bitrix_config.get('get_sprint_event'),
-        get_stages_event=bitrix_config.get('get_stages_event'),
+    logger.info("Initialising client | Started")
+    bitrix_client = BitrixClient(bitrix_config['HOST'],
+                                 bitrix_config['TOKEN'].get_secret_value(),
+                                 bitrix_config['GET_COMMENTS_EVENT'],
+                                 bitrix_config['GET_STAGES_EVENT'],
+                                 bitrix_config['GET_SPRINT_EVENT'],
+                                 bitrix_config['GET_TASKS_EVENT'])
+    db = Database(
+        database_url=database_config['SQLALCHEMY_DATABASE_URI'].get_secret_value(),
+        table_name=database_config['TABLE_NAME'].get_secret_value()
     )
-    logger.info("Bitrix model initialise | success")
+    logger.info("Initialising client | Success")
 
+    logger.info("Getting active sprint | Started")
+    active_sprint_id = await get_active_sprint(bitrix_client)
+    logger.info("Getting active sprint | Success")
 
-    logger.info("Database model initialise | started")
-    database_model = DatabaseModel(
-        sqlalchemy_database_uri = database_config.get('sqlalchemy_database_uri'),
-        sqlalchemy_track_modifications = database_config.get('sqlalchemy_track_modifications')
-    )
-    logger.info("Database model initialise | success")
+    logger.info("Getting stages from active sprint | Started")
+    active_stage_ids = await get_stages(bitrix_client, active_sprint_id)
+    logger.info("Getting stages from active sprint | Success")
 
+    logger.info("Getting tasks from stages | Started")
+    bitrix_tasks = await get_tasks(bitrix_client, active_stage_ids)
+    logger.info("Getting tasks from stages | Success")
 
-    logger.info("Getting active sprint id | started")
-    bitrix_active_sprint_id = await get_active_sprint(bitrix_model)
-    logger.info("Getting active sprint id | success")
+    logger.info("Getting comments from tasks | Started")
+    bitrix_tasks = await get_comments(bitrix_client, bitrix_tasks)
+    logger.info("Getting comments from tasks | Success")
 
+    logger.info("Processing lead-time | Started")
+    bitrix_tasks = process_leadtime(bitrix_tasks)
+    logger.info("Processing lead-time | Success")
 
-    logger.info("Getting active stages ids | started")
-    bitrix_stages_ids = await get_sprint_stages(bitrix_model, bitrix_active_sprint_id)
-    logger.info("Getting active stages ids | success")
+    logger.info("Processing touch-time | Started")
+    bitrix_tasks = process_touchtime(bitrix_tasks)
+    logger.info("Processing touch-time | Success")
 
+    logger.info("Saving tasks to database | Started")
+    db.save_tasks(bitrix_tasks)
+    logger.info("Saving tasks to database | Success")
 
-    logger.info("Getting all tasks | started")
-    bitrix_tasks = await get_sprint_tasks(bitrix_model, bitrix_stages_ids)
-    logger.info("Getting all tasks | success")
-
-
-    logger.info("Calculating hours from comments | started")
-    bitrix_tasks = await get_tasks_comments(bitrix_model, bitrix_tasks)
-    logger.info("Calculating hours from comments | success")
-
-
-    logger.info("Adding hours to tasks | started")
-    bitrix_tasks = await validate_task_list(bitrix_tasks, '10')
-    logger.info("Adding hours to tasks | success")
-
-    logger.info("Saving tasks | started")
-    await save_tasks(bitrix_tasks,
-                     saves_path=saves_config.get('saves_path'),
-                     saves_encoding=saves_config.get('saves_encoding'))
-    logger.info("Saving tasks | success")
-
-
-    logger.info("Writing to database | started")
-    await save_to_database(database_model,
-                           table_name=database_config.get('table_name'),
-                           saves_path=saves_config.get('saves_path'))
-    logger.info("Writing to database | success")
