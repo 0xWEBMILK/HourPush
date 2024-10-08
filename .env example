@@ -1,0 +1,15 @@
+HOST = ""
+TOKEN = ""
+
+GET_COMMENTS_EVENT = "task.commentitem.getlist.json"
+GET_STAGES_EVENT = "tasks.api.scrum.kanban.getStages"
+GET_SPRINT_EVENT = "tasks.api.scrum.sprint.list?filter[STATUS]=active&filter[GROUP_ID]=72"
+GET_TASKS_EVENT = "tasks.task.list.json"
+
+SAVES_PATH = "./"
+SAVES_ENCODING = "utf-8"
+
+SQLALCHEMY_DATABASE_URI = ""
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+TABLE_NAME = ""
