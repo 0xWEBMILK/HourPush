@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pullhour"
+name = "hourpush"
 version = "0.1.0"
 description = ""
 authors = ["D. Adamson <0xwebmilk@gmail.com>"]
