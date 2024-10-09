@@ -15,3 +15,5 @@ def process_leadtime(bitrix_tasks):
 
         lead_time = (current_date - task_created_date).days
         task['lead-time'] = lead_time * 24
+    
+    return bitrix_tasks

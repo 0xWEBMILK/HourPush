@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from core.config.logger_setup import logger
+from config.logger_setup import logger
 
 # Создание базы данных
 Base = declarative_base()

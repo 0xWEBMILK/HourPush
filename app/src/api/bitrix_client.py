@@ -3,7 +3,7 @@ import asyncio
 from decouple import config
 from pydantic import SecretStr
 from typing import Dict, Any
-from core.config.logger_setup import logger
+from config.logger_setup import logger
 
 class BitrixClient:
     def __init__(self, host: str, token: str, get_comments_event: str, get_stages_event: str, get_sprint_event: str, get_tasks_event: str) -> None:
