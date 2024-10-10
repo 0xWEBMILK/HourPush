@@ -54,7 +54,7 @@ async def main(*args, **kwargs):
     bitrix_tasks = process_touchtime(bitrix_tasks)
     logger.info("Processing touch-time | Success")
 
-    # logger.info("Saving tasks to database | Started")
+    logger.info("Saving tasks to database | Started")
     db.save_tasks(bitrix_tasks)
     logger.info("Saving tasks to database | Success")
 
