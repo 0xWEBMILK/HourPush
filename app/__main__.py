@@ -55,7 +55,7 @@ async def main(*args, **kwargs):
     logger.info("Processing touch-time | Success")
 
     # logger.info("Saving tasks to database | Started")
-    # db.save_tasks(bitrix_tasks)
+    db.save_tasks(bitrix_tasks)
     logger.info("Saving tasks to database | Success")
 
 if __name__ == "__main__":
