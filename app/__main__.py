@@ -5,10 +5,10 @@ from config.logger_setup import logger
 from config.logger_setup import logger
 from config.main_config import get_all_configs
 
-from src.api.bitrix_client import BitrixClient
-from src.sprint import get_active_sprint, get_stages, get_tasks, get_comments
-from src.processing import process_leadtime, process_touchtime
-from src.db.database import Database
+from functions.api.bitrix_client import BitrixClient
+from functions.sprint import get_active_sprint, get_stages, get_tasks, get_comments
+from functions.processing import process_leadtime, process_touchtime
+from functions.db.database import Database
 
 
 async def main(*args, **kwargs):
