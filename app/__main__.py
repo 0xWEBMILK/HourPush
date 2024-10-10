@@ -24,10 +24,10 @@ async def main(*args, **kwargs):
                                  bitrix_config['GET_STAGES_EVENT'],
                                  bitrix_config['GET_SPRINT_EVENT'],
                                  bitrix_config['GET_TASKS_EVENT'])
-    # db = Database(
-    #     database_url=database_config['SQLALCHEMY_DATABASE_URI'].get_secret_value(),
-    #     table_name=database_config['TABLE_NAME'].get_secret_value()
-    # )
+    db = Database(
+        database_url=database_config['SQLALCHEMY_DATABASE_URI'].get_secret_value(),
+        table_name=database_config['TABLE_NAME'].get_secret_value()
+    )
     logger.info("Initialising client | Success")
 
     logger.info("Getting active sprint | Started")
